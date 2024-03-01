@@ -1,0 +1,8 @@
+See what command line arguments are available/do
+python DatasetGenerator.py -h
+Run this to see if its generating properly (READS FIELD.PNG)
+python DatasetGenerator.py -i 5 -in field.png -d True
+Generate 10 images each from every background image placed in images folder
+python DatasetGenerator.py -i 10 -f images
+Generate 100 images using field.png
+python DatasetGenerator.py -i 100 -f field.png

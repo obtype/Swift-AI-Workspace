@@ -1,0 +1,15 @@
+
+
+1) generate a dataset.
+	- 1 set of labels contain the 
+
+
+
+Yolo Algorithm
+
+1) the input image from the drone will be passed into a yolo model that detects the presence of drop points in our image.
+2) If it detects an image, it creates a bounding box around it.
+3) Next, another yolo model is responsible for then detecting the shape of the image that we have inside the bounding box. (we will only be examining the bounding box, not the whole image)
+4) Then, another yolo model(maybe not?) detects the color of the shape.
+5) another yolo model detects the character inside the shape.
+6) another yolo model detects the color of the character.
