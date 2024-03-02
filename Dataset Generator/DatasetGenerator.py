@@ -94,7 +94,9 @@ def debug_show_bounding_boxes(field, target_positions, target_shapes, shape_colo
         text_size = cv2.getTextSize(class_name, font, font_scale, font_thickness)[0]
         cv2.putText(field_with_boxes, class_name, (int(y + half_w), int(x - half_h)), font, font_scale, (255, 255, 255), font_thickness, cv2.LINE_AA)
         
-    cv2.imshow('Debug - Bounding Boxes', field_with_boxes)
+    #cv2.imshow('Debug - Bounding Boxes', field_with_boxes)
+    import matplotlib.pyplot as plt
+    plt.imshow(field_with_boxes)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 

@@ -10,7 +10,7 @@ model = yolov5.load(pathlib.Path('useful-tools/best.pt'))
 #model = yolov5.load('train/best.pt')
   
 # set model parameters
-model.conf = 0.05  # NMS confidence threshold
+model.conf = 0.25  # NMS confidence threshold
 model.iou = 0.45  # NMS IoU threshold
 model.agnostic = False  # NMS class-agnostic
 model.multi_label = False  # NMS multiple labels per box
@@ -19,8 +19,8 @@ model.max_det = 1000  # maximum number of detections per image
 # set image
 #img = r'C:\Users\Administrator.MININT-H2P38Q5\Desktop\uni stuff\Semester 3\code\python\testing\car.jpg'
 
-img = pathlib.Path('useful-tools/test-images/test3.jpg')
-
+#img = pathlib.Path('useful-tools/test-images/test3.jpg')
+img = pathlib.Path('useful-tools/test-images/5x zoom.png')
 
 # perform inference
 results = model(img)
