@@ -313,7 +313,10 @@ if __name__ == '__main__':
             if(args.debugger):
                 debug_show_bounding_boxes(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape)
 
-            image_filename = os.path.join(output_directory, 'OUT_{0}{1}.png'.format(field_name[:-4], seed))
+            #image_filename = os.path.join(output_directory, 'OUT_{0}{1}.png'.format(field_name[:-4], seed))
+            #for testing purposes, I am adding timestamp in the filename:
+            timestamp = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
+            image_filename = os.path.join(output_directory, 'OUT_{0} {1}.png'.format(field_name[:-4], timestamp))
             cv2.imwrite(image_filename, field)
             print(f"Image {image_index + 1}/{args.num_images} saved as {image_filename}")
             writeAnnotationFile(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape, image_filename, image_index)
