@@ -130,7 +130,7 @@ def writeAnnotationFile(field, target_positions, target_shapes, shape_colors, al
         # i will find you.
         # Mub: this is what generates the Yolov5 formatted labels/annotations for the images.
         file += f"{classNo} {round(y/image_shape[1],6):.6f} {round(x/image_shape[0],6):.6f} {round(2*half_h/image_shape[1],6):.6f} {round(2*half_w/image_shape[0],6):.6f}\n"
-
+    print(img_name)
     f = open(f"{img_name[:-4]}.txt", "w")
     f.write(file)
     print(f"txt File {image_index + 1}/{args.num_images+1} saved as {img_name[:-4]}.txt")
@@ -203,8 +203,8 @@ folderMode = False
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--num_images', type=int, default=100, help='The number of images to generate.')
-    parser.add_argument('-t', '--num_targets', type=int, default=5, help='The number of targets to place in each mock field.')
+    parser.add_argument('-i', '--num_images', type=int, default=5, help='The number of images to generate.')
+    parser.add_argument('-t', '--num_targets', type=int, default=1, help='The number of targets to place in each mock field.')
     parser.add_argument('-s', '--scale_target', type=float, default=0.3, help='The average scale factor for each target.')
     parser.add_argument('-sv', '--scale_variance', type=float, default=0.2, help='The multiplication factor by which the scale of a single target can vary. Set to 0 for a constant scale.')
     parser.add_argument('-l', '--lighting_constant', type=float, default=0.5, help='The amount to scale each pixel saturation by, simulating natural lighting.')
@@ -215,7 +215,8 @@ if __name__ == '__main__':
     parser.add_argument('-sc', '--scale', type=float, default=0.2, help='(CONTACT HAMZA) how much should we scale the bounding boxes')
     parser.add_argument('-in', '--image_name', type=str, default="maryland_test.png")
     parser.add_argument('-f', '--image_folder', type=str, default="", help='the folder where the input images are stored')
-    
+    parser.add_argument('-dim','--image_dimension', type=int, default=720, help='The (height) dimension of the output images that you want to generate. The width will be auto generated using 16:9 ratio.' )
+
     args = parser.parse_args()
 
     if args.image_folder != "":
@@ -247,6 +248,22 @@ if __name__ == '__main__':
                 field = cv2.imread(field_name)
 
             image_shape = field.shape
+        
+
+            # Resize the image to a new size (width, height)
+            new_height = args.image_dimension
+            new_width = int((16/9) * args.image_dimension)
+            print(new_height, new_width)
+            
+            field = cv2.resize(field, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
+
+            # Display the resized image
+            #cv2.imshow('Resized Image', field)
+            #cv2.waitKey(0)
+            #cv2.destroyAllWindows()
+
+
+
 
             all_target_positions = []
             all_target_shapes = []
@@ -263,13 +280,20 @@ if __name__ == '__main__':
 
                 orientation = random.choice(list(orientations.keys()))
                 scale = random.uniform((1-args.scale_variance)*args.scale_target, (1+args.scale_variance)*args.scale_target)
-
+                # I want to make it so that the scale value is determined automatically, based on the zoom level, and it should work seamlessly at all input image resolutions. 
+                scale = 0.5
+                print("hello scale!!: ", scale)
                 # Check for overlapping and generate a new position if necessary
                 while True:
+                    #below line is what determines the position of the shapes on the image.
+                    #The pos = (x,y), where x and y are the pixel coordinates of the shapes.
                     pos = (
                         round(random.uniform(-args.clip_maximum*100*scale, field.shape[0]-(1-args.clip_maximum)*100*scale)),
                         round(random.uniform(-args.clip_maximum*100*scale, field.shape[1]-(1-args.clip_maximum)*100*scale))
                     )
+
+                    #pos = (300, 120) #hard coding this will make an infinite loop if i try more than 1 shape in image
+
                     bounding_box = (
                         pos[0] - int(50 * scale),
                         pos[1] - int(50 * scale),
@@ -313,7 +337,10 @@ if __name__ == '__main__':
             if(args.debugger):
                 debug_show_bounding_boxes(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape)
 
-            image_filename = os.path.join(output_directory, 'OUT_{0}{1}.png'.format(field_name[:-4], seed))
+            #image_filename = os.path.join(output_directory, 'OUT_{0}{1}.png'.format(field_name[:-4], seed))
+            #for testing purposes, I am adding timestamp in the filename:
+            timestamp = time.strftime('%Y-%m-%d %H-%M-%S', time.localtime())
+            image_filename = os.path.join(output_directory, 'OUT_{0} {1} {2}.png'.format(field_name[:-4], timestamp, seed))
             cv2.imwrite(image_filename, field)
             print(f"Image {image_index + 1}/{args.num_images} saved as {image_filename}")
             writeAnnotationFile(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape, image_filename, image_index)
