@@ -1,0 +1,7 @@
+current target : 22 pixels => s = 0.2
+44 pixels => s = 0.4
+
+
+23 pixels => sc = 0.1 
+203 pixels=> sc = 1
+403 pixels=> sc = 2
