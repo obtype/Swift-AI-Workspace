@@ -154,6 +154,11 @@ def writeAnnotationFile(field, target_positions, target_shapes, shape_colors, al
         x += x_offset
         y += y_offset
 
+        #finally... this was the problem smh. idk why the guy making this didn't fix this bug.
+        #as a result of the lines below, the x and y values are at the center of the drop point, rather than the top left of it.
+        x += half_w
+        y += half_h
+
         #Mub: this is the place where the class name is being declared.
         #class_name = f"{shape} {shape_color} {alphanum} {alphanum_color}"
         class_name = f"object"  #this edited line makes it so there is only 1 class called object.
@@ -164,6 +169,7 @@ def writeAnnotationFile(field, target_positions, target_shapes, shape_colors, al
         # i will find you.
         # Mub: this is what generates the Yolov5 formatted labels/annotations for the images.
         file += f"{classNo} {round(y/image_shape[1],6):.6f} {round(x/image_shape[0],6):.6f} {round(2*half_h/image_shape[1],6):.6f} {round(2*half_w/image_shape[0],6):.6f}\n"
+        #file += f"{classNo} {round(x/image_shape[0],6):.6f} {round(y/image_shape[1],6):.6f} {round(2*half_w/image_shape[0],6):.6f} {round(2*half_h/image_shape[1],6):.6f}\n"
     print(img_name)
     f = open(f"{img_name[:-4]}.txt", "w")
     f.write(file)
@@ -243,9 +249,11 @@ def calculate_s_sc(dimension, zoom_level):
     #s value per pixel = 0.009
     s = 0.009 * heightInPixels
 
-    #sc value per pixel = 0.00496
-
-    sc = 0.00496 * heightInPixels
+    #sc value per pixel = 0.00496 ~ 0.006 (this higher value seems to be working better, as it makes the bounding box just big enough to fit the whole shape in it completely)
+    #nvm that was a lie
+    #basically, this sc value will make the bounding box scale from the top left corner.
+    
+    sc = 0.005 * heightInPixels
     
     return (s,sc)
     #yay alhamdulillah! i think its working!
@@ -259,17 +267,17 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--num_images', type=int, default=1, help='The number of images to generate.')
     parser.add_argument('-t', '--num_targets', type=int, default=1, help='The number of targets to place in each mock field.')
-    parser.add_argument('-s', '--scale_target', type=float, default=0.3, help='The average scale factor for each target.')
+    parser.add_argument('-s', '--scale_target', type=float, default=0.3, help='The average scale factor for each target.')  #this values is ignored, I overwrite it later on using this function: calculate_s_sc()
     parser.add_argument('-sv', '--scale_variance', type=float, default=0, help='The multiplication factor by which the scale of a single target can vary. Set to 0 for a constant scale.')
     parser.add_argument('-l', '--lighting_constant', type=float, default=0.5, help='The amount to scale each pixel saturation by, simulating natural lighting.')
     parser.add_argument('-n', '--noise_intensity', type=int, default=10, help='The maximum increase or decrease applied to HSV values in random noise generation.')
     parser.add_argument('-c', '--clip_maximum', type=float, default=0, help='The greatest proportion of a target\'s width/height that may be out of bounds. Zero by default, but set higher to allow clipping.')
-    parser.add_argument('-d', '--debugger', type=bool, default=False, help='show bounding boxes (YOLO)')
-    parser.add_argument('-o', '--offset', nargs=2, type=int, default=[15, 15], help='(CONTACT HAMZA) how much to the [down, right] should we move the bounding boxes')
-    parser.add_argument('-sc', '--scale', type=float, default=0.2, help='(CONTACT HAMZA) how much should we scale the bounding boxes')
+    parser.add_argument('-d', '--debugger', type=bool, default=True, help='show bounding boxes (YOLO)')
+    parser.add_argument('-o', '--offset', nargs=2, type=int, default=[-1, -1], help='(CONTACT HAMZA) how much to the [down, right] should we move the bounding boxes')
+    parser.add_argument('-sc', '--scale', type=float, default=0.2, help='(CONTACT HAMZA) how much should we scale the bounding boxes') #this values is ignored, I overwrite it later on using this function: calculate_s_sc()
     parser.add_argument('-in', '--image_name', type=str, default="maryland_test.png")
     parser.add_argument('-f', '--image_folder', type=str, default="./input-images-1", help='the folder where the input images are stored')
-    parser.add_argument('-dim','--image_dimension', type=int, default=720, help='The (height) dimension of the output images that you want to generate. The width will be auto generated using 16:9 ratio. The input images will be resized to achieve this.' )
+    parser.add_argument('-dim','--image_dimension', type=int, default=1080, help='The (height) dimension of the output images that you want to generate. The width will be auto generated using 16:9 ratio. The input images will be resized to achieve this.' )
     parser.add_argument('-z', '--zoom_level', type=float, default=2.5, help='The zoom level that the camera will be operating at, when looking at the shapes from above.')
 
     args = parser.parse_args()
@@ -360,20 +368,21 @@ if __name__ == '__main__':
                     )
 
                     #pos = (300, 120) #hard coding this will make an infinite loop if i try more than 1 shape in image
-                    #pos = (-10,0)
-                    """ bounding_box = (
+                    #pos = (0,0)
+                    bounding_box = (
                         pos[0] - int(50 * scale),
                         pos[1] - int(50 * scale),
                         pos[0] + int(50 * scale),
                         pos[1] + int(50 * scale)
-                    ) """
-
-                    bounding_box = (
-                        pos[0] - int(60 * scale),
-                        pos[1] - int(60 * scale),
-                        pos[0] + int(60 * scale),
-                        pos[1] + int(60 * scale)
                     )
+
+                    """ bounding_box = (
+                        pos[0] - int(4000 * scale), #x center
+                        pos[1] - int(400 * scale),  #y center
+                        pos[0] + int(400 * scale),  #width
+                        pos[1] + int(4000 * scale)  #height
+                    ) """
+                    print(bounding_box)
 
 
                     overlap = False

@@ -5,3 +5,15 @@ current target : 22 pixels => s = 0.2
 23 pixels => sc = 0.1 
 203 pixels=> sc = 1
 403 pixels=> sc = 2
+
+
+
+
+a point of interest is the target positions argument that gets passed to the annotations function.
+the other point is why the heck the x and y values are switched around in the annotation function.
+
+at zoom 2.5 => 0.00496
+at zoom 5 => 0.006
+at zoom 10 => 
+
+nvm the problem was something else.
