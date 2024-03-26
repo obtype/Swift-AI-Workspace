@@ -252,7 +252,7 @@ if __name__ == '__main__':
 
             # Resize the image to a new size (width, height)
             new_height = args.image_dimension
-            new_width = int((16/9) * args.image_dimension)
+            new_width = int((16/9) * new_height)
             print(new_height, new_width)
             
             field = cv2.resize(field, (new_width, new_height), interpolation=cv2.INTER_LINEAR)
