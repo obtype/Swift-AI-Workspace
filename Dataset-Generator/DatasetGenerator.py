@@ -286,6 +286,8 @@ if __name__ == '__main__':
     args.scale_target, args.scale = calculate_s_sc(args.image_dimension, args.zoom_level)
     print("This is the dim things:", args.image_dimension)
 
+    print("the debugger flag is:", args.debugger)
+
 
     #I need to create a flag for choosing the zoom level. The zoom level will decide on the correct values for 
     #the s and sc flags, which control the size of the drop point and bounding box respectively.
@@ -427,7 +429,7 @@ if __name__ == '__main__':
             cv2.imwrite(image_filename, field)
             print(f"Image {image_index + 1}/{args.num_images} saved as {image_filename}")
             writeAnnotationFile(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape, image_filename, image_index)
-
+            
             if(args.debugger):
                 print("the debugger flag is:", args.debugger)
                 #debug_show_bounding_boxes(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape)
