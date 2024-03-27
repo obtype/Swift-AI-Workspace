@@ -429,6 +429,7 @@ if __name__ == '__main__':
             writeAnnotationFile(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape, image_filename, image_index)
 
             if(args.debugger):
+                print()
                 #debug_show_bounding_boxes(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape)
                 show_bounding_box(image_filename)
                 
