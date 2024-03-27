@@ -278,7 +278,8 @@ if __name__ == '__main__':
     parser.add_argument('-in', '--image_name', type=str, default="maryland_test.png")
     parser.add_argument('-f', '--image_folder', type=str, default="./input-images-1", help='the folder where the input images are stored')
     parser.add_argument('-dim','--image_dimension', type=int, default=1080, help='The (height) dimension of the output images that you want to generate. The width will be auto generated using 16:9 ratio. The input images will be resized to achieve this.' )
-    parser.add_argument('-z', '--zoom_level', type=float, default=2.5, help='The zoom level that the camera will be operating at, when looking at the shapes from above.')
+    parser.add_argument('-z', '--zoom_level', type=float, default=2.5 , help='The zoom level that the camera will be operating at, when looking at the shapes from above.')
+    parser.add_argument('-od', '--output_dir', type=str, default='./output/', help='The directory where the output images, their labels, and the class list will be stored.')
 
     args = parser.parse_args()
     #args.image_dimension = 100
@@ -302,7 +303,7 @@ if __name__ == '__main__':
     else:
         fields = [args.image_name]
 
-    output_directory = './output/'  
+    output_directory = args.output_dir  
 
     os.makedirs(output_directory, exist_ok=True)
 
