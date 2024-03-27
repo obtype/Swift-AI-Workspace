@@ -309,8 +309,8 @@ if __name__ == '__main__':
 
     for field_name in fields:
         for image_index in range(args.num_images):
-            args = parser.parse_args()
-            args.scale_target, args.scale = calculate_s_sc(args.image_dimension, args.zoom_level)
+            """ args = parser.parse_args()
+            args.scale_target, args.scale = calculate_s_sc(args.image_dimension, args.zoom_level) """
         
             current_time_ms = int(time.time() * 1000)
             seed = random.randint(1, 1000000)*current_time_ms
@@ -430,8 +430,8 @@ if __name__ == '__main__':
 
             if(args.debugger):
                 #debug_show_bounding_boxes(field, all_target_positions, all_target_shapes, all_target_shape_colors, all_target_alphanums, all_target_alphanum_colors, image_shape)
-                #show_bounding_box(image_filename)
-                pass
+                show_bounding_box(image_filename)
+                
                             
 
     writeClassesFile()
