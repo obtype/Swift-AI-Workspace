@@ -272,7 +272,7 @@ if __name__ == '__main__':
     parser.add_argument('-l', '--lighting_constant', type=float, default=0.5, help='The amount to scale each pixel saturation by, simulating natural lighting.')
     parser.add_argument('-n', '--noise_intensity', type=int, default=10, help='The maximum increase or decrease applied to HSV values in random noise generation.')
     parser.add_argument('-c', '--clip_maximum', type=float, default=0, help='The greatest proportion of a target\'s width/height that may be out of bounds. Zero by default, but set higher to allow clipping.')
-    parser.add_argument('-d', '--debugger', type=bool, default=False, help='show bounding boxes (YOLO)')
+    parser.add_argument('-d', '--debugger', type=bool, default=False, help='show bounding boxes (YOLO)') #bruh. If you include this flag in your argument, then the value of it will always be true. to keep it false, make sure you dont add it in the command line argument. I think there is a way to make it so that if I pass the value of False, it gets set to False; but that is left to do for some other day.
     parser.add_argument('-o', '--offset', nargs=2, type=int, default=[-1, -1], help='(CONTACT HAMZA) how much to the [down, right] should we move the bounding boxes')
     parser.add_argument('-sc', '--scale', type=float, default=0.2, help='(CONTACT HAMZA) how much should we scale the bounding boxes') #this values is ignored, I overwrite it later on using this function: calculate_s_sc()
     parser.add_argument('-in', '--image_name', type=str, default="maryland_test.png")
