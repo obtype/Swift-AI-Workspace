@@ -1,0 +1,7 @@
+200 training images,
+40 testing images,
+20 validation images,
+
+total = 260 images to be generated.
+
+python ./DatasetGenerator.py -f ./input-images/ -z 2.5 -dim 1080 -i 10
