@@ -4,4 +4,4 @@
 
 total = 260 images to be generated.
 
-python ./DatasetGenerator.py -f ./input-images/ -z 2.5 -dim 1080 -i 10
+python ./DatasetGenerator.py -f ./input-images/test-batch-1 -z 2.5 -dim 1080 -i 10 -od ../Datasets/algo-1-testing-2/unsorted-images
