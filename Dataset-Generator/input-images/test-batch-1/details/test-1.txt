@@ -5,3 +5,6 @@
 total = 260 images to be generated.
 
 python ./DatasetGenerator.py -f ./input-images/test-batch-1 -z 2.5 -dim 1080 -i 10 -od ../Datasets/algo-1-testing-2/unsorted-images
+
+python3 ./train.py --epochs 5 --weights yolov5s.pt --img 1920 --data ../Datasets/algo-1-testing-2/swiftDataset2.yaml 
+
