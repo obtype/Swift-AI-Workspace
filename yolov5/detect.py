@@ -36,9 +36,10 @@ import sys
 from pathlib import Path
 
 #this is my own thing. hopefully it doesnt mess anything up
-import pathlib
-temp = pathlib.PosixPath
-pathlib.PosixPath = pathlib.WindowsPath
+if os.name == 'nt':
+    import pathlib
+    temp = pathlib.PosixPath
+    pathlib.PosixPath = pathlib.WindowsPath
 #end
 
 import torch
