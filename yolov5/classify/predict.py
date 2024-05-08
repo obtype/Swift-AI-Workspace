@@ -34,6 +34,13 @@ import platform
 import sys
 from pathlib import Path
 
+#this is my own thing. hopefully it doesnt mess anything up
+if os.name == 'nt':
+    import pathlib
+    temp = pathlib.PosixPath
+    pathlib.PosixPath = pathlib.WindowsPath
+#end
+
 import torch
 import torch.nn.functional as F
 
