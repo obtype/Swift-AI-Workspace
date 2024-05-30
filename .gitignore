@@ -3,3 +3,6 @@ Dataset-Generator/output/
 clickMe.png
 yolov8/runs/
 Dataset-Generator/input-images/test-batch-2/
+useful-tools/Extract-frames/images/
+useful-tools/Extract-frames/labels/
+Dataset-Generator/outputShapes/
